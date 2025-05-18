@@ -20,20 +20,15 @@ const generateTodo = (data) => {
     "#todo-template",
     handleTodoDelete,
     handleCheck,
-    handleDelete,
-    todoCounter
+    handleDelete
   );
   const todoElement = todo.getView();
   return todoElement;
 };
 
-function renderTodo(item) {
-  return generateTodo(item);
-}
-
 const section = new Section({
   items: initialTodos,
-  renderer: renderTodo,
+  renderer: generateTodo,
   containerSelector: ".todos__list",
 });
 
@@ -62,8 +57,6 @@ const addTodoPopup = new PopupWithForm({
 
     section.addItem({ name, date, id });
     addTodoPopup.close();
-    newTodoValidator.resetValidation();
-    addTodoForm.reset();
     todoCounter.updateTotal(true);
   },
 });

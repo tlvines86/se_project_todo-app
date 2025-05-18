@@ -1,12 +1,5 @@
 class Todo {
-  constructor(
-    data,
-    templateSelector,
-    onDelete,
-    handleCheck,
-    handleDelete,
-    todoCounter
-  ) {
+  constructor(data, templateSelector, onDelete, handleCheck, handleDelete) {
     this._data = data;
     this._dueDate = null;
 
@@ -24,7 +17,16 @@ class Todo {
 
     this._handleCheck = handleCheck;
     this._handleDelete = handleDelete;
-    this._todoCounter = todoCounter;
+  }
+
+  _setElements() {
+    this._todoNameEl = this._todoElement.querySelector(".todo__name");
+
+    this._todoDate = this._todoElement.querySelector(".todo__date");
+    this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
+
+    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
+    this._todoLabel = this._todoElement.querySelector(".todo__label");
   }
 
   _setEventListeners() {
@@ -35,14 +37,11 @@ class Todo {
 
     this._todoDeleteBtn.addEventListener("click", () => {
       this._onDelete(this._data.id);
-      this._handleDelete();
       this._remove();
     });
   }
 
   _generateCheckboxEl() {
-    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
-    this._todoLabel = this._todoElement.querySelector(".todo__label");
     this._todoCheckboxEl.checked = this._data.completed;
     this._todoCheckboxEl.id = `todo-${this._data.id}`;
     this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
@@ -50,9 +49,7 @@ class Todo {
 
   _remove() {
     this._todoElement.remove();
-    if (this._data.completed) {
-      this._todoCounter.updateCompleted(false);
-    }
+    this._handleDelete(this._data);
   }
 
   getView() {
@@ -60,13 +57,9 @@ class Todo {
     this._todoElement = this._templateElement.content
       .querySelector(".todo")
       .cloneNode(true);
+    this._setElements();
 
     this._todoElement.dataset.todoId = this._data.id;
-
-    this._todoNameEl = this._todoElement.querySelector(".todo__name");
-
-    this._todoDate = this._todoElement.querySelector(".todo__date");
-    this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
 
     this._todoNameEl.textContent = this._data.name;
 

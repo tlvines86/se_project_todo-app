@@ -1,5 +1,5 @@
 class Todo {
-  constructor(data, templateSelector, onDelete, handleCheck, handleDelete) {
+  constructor(data, templateSelector, handleCheck, handleDelete) {
     this._data = data;
     this._dueDate = null;
 
@@ -12,8 +12,6 @@ class Todo {
     this._todoDeleteBtn = null;
     this._todoCheckboxEl = null;
     this._todoLabel = null;
-
-    this._onDelete = onDelete;
 
     this._handleCheck = handleCheck;
     this._handleDelete = handleDelete;
@@ -36,7 +34,6 @@ class Todo {
     });
 
     this._todoDeleteBtn.addEventListener("click", () => {
-      this._onDelete(this._data.id);
       this._remove();
     });
   }
@@ -49,7 +46,7 @@ class Todo {
 
   _remove() {
     this._todoElement.remove();
-    this._handleDelete(this._data);
+    this._handleDelete(this._data.completed);
   }
 
   getView() {
